@@ -27,7 +27,7 @@ export const useLogin = () => {
         username: credentials.username,
       });
 
-      // Redirect to dashboard
+      // Redirect to dashboard apres connexion valide
       navigate('/');
       
       return true;

@@ -7,11 +7,11 @@ import GuestDetailDialog from '../../components/guests/GuestDetailDialog';
 import Notification from '../../components/common/Notification';
 import type { Guest } from '../../types';
 import api from '../../api/api';
-// const api = axios.create({
-//   baseURL: 'http://localhost:8000/', // URL de base pour les requêtes HTTP
-// });
+import { useAuthStore } from '../../store/useAuthStore'
 
 const GuestList: React.FC = () => {
+  const token = useAuthStore((state) => state.token);
+
   const navigate = useNavigate();
   const location = useLocation();
   const guests = useGuestStore((state) => state.guests);
@@ -26,7 +26,9 @@ const GuestList: React.FC = () => {
   // Nouvelle fonction pour récupérer les invités depuis l'API
   const fetchGuests = async () => {
     try {
-      const response = await api.get('guests');
+      const response = await api.get('guests', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       // Mettez à jour les invités dans votre store ou état
       useGuestStore.getState().setGuests(response.data); // Mettre à jour le store avec les données récupérées
     } catch (error) {
